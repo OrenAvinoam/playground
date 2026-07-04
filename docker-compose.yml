@@ -1,0 +1,30 @@
+services:
+  db:
+    build: ./services/db
+    environment:
+      POSTGRES_DB: playground
+      POSTGRES_USER: playground
+      POSTGRES_PASSWORD: playground
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build: ./services/app
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: playground
+      DB_USER: playground
+      DB_PASSWORD: playground
+    depends_on:
+      - db
+
+  web:
+    build: ./services/web
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+
+volumes:
+  db-data:
