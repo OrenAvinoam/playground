@@ -1,0 +1,7 @@
+# Local/minikube overrides. Kept thin on purpose: values.yaml's defaults
+# already ARE the dev shape, this file just makes the environment explicit
+# and is where dev-only tweaks would go (e.g. exposing web via NodePort so
+# `minikube service web --url` works).
+services:
+  web:
+    serviceType: NodePort

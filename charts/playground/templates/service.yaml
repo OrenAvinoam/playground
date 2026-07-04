@@ -1,0 +1,17 @@
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "playground.labels" $ | nindent 4 }}
+    app: {{ $name }}
+spec:
+  type: {{ $svc.serviceType | default "ClusterIP" }}
+  selector:
+    app: {{ $name }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: {{ $svc.port }}
+{{- end }}
