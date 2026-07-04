@@ -1,0 +1,22 @@
+image:
+  repository: orenavinoam11/playground
+  tag: db
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  port: 5432
+
+postgres:
+  db: playground
+  user: playground
+  password: playground
+
+resources: {}
+
+readinessProbe:
+  exec:
+    command: ["pg_isready", "-U", "playground"]
+  initialDelaySeconds: 5
+  periodSeconds: 5

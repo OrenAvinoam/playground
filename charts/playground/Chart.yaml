@@ -1,6 +1,0 @@
-apiVersion: v2
-name: playground
-description: Config-driven chart for the playground app — one Deployment+Service per entry in .Values.services
-type: application
-version: 0.1.0
-appVersion: "1.0.0"

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Hardcoded, not `include "web.fullname"` — kept consistent with db/app so
+  # all three Services have stable, predictable names regardless of release
+  # name (web itself isn't depended on by name, but the convention matches).
+  name: web
+  labels:
+    {{- include "web.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "web.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "web.selectorLabels" . | nindent 8 }}
+    spec:
+      initContainers:
+        - name: wait-for-app
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z app 5000; do
+                echo "waiting for app:5000...";
+                sleep 2;
+              done
+      containers:
+        - name: web
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
