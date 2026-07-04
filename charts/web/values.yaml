@@ -1,0 +1,12 @@
+image:
+  repository: orenavinoam11/playground
+  tag: web
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: NodePort
+  port: 80
+
+resources: {}
